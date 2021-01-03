@@ -38,9 +38,11 @@ namespace OSMScraper
                         using (var sr = new StreamReader(stream))
                         {
                             var contentString = await sr.ReadToEndAsync();
-                            doc.LoadHtml(contentString);
+                            doc.LoadHtml(contentString );
                         }
-                
+                    else
+                        return null;
+
                 var currencies = doc.DocumentNode
                                 .SelectNodes("//select/option")
                                 .Skip(1)
@@ -108,7 +110,6 @@ namespace OSMScraper
                                         .Select(node => node.InnerHtml)
                                         .ToArray();
     
-    
                 if (table.First() == "sorry, no records！")
                     return new PageInfo() {Currency = currency, PageCount = 0, RecordCount = 0};
     
@@ -165,7 +166,8 @@ namespace OSMScraper
                     {
                             var page = await ScrapeEachPage(
                                 $"{Url}?erectDate={StartDate}&nothing={EndDate}&pjname={pageInfo.Currency}&page={i}", i);
-                            pageInfo.Pages.Add(page);
+                            if(page.Id != 0)
+                                pageInfo.Pages.Add(page);
                             Console.WriteLine($"Currency {pageInfo.Currency} Pages {pageInfo.Pages.Count} / {pageInfo.PageCount}");
                     }
                     finally
@@ -192,7 +194,12 @@ namespace OSMScraper
                             var contentString = await sr.ReadToEndAsync();
                             doc.LoadHtml(contentString);
                         }
-    
+                    else
+                    {
+                        Console.WriteLine($"Scraping page on url: {url} failed.");
+                        return new Page() { Id = 0 };
+                    }
+
                 var table = doc.DocumentNode
                                         .SelectNodes("//tr/td")
                                         .Where(node => node.HasClass("hui12_20"))

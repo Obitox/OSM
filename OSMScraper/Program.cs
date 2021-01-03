@@ -38,7 +38,18 @@ namespace OSMScraper
             var scraper = new Scraper(startDate, endDate, initialScrapeUrl, scrapeDirectory);
             
             var currencies = await scraper.ScrapeAllCurrencies();
+            if (currencies == null || currencies.Count == 0)
+            {
+                Console.WriteLine("Failed to retrieve any currencies.");
+                return;
+            }
+
             var pageInfos  = await scraper.InitialPagesScrape(currencies);
+            if (pageInfos == null || pageInfos.Count == 0)
+            {
+                Console.WriteLine("Failed to retrieve any page for any currency.");
+                return;
+            } 
             
             pageInfos = await scraper.ScrapeAllPages(pageInfos);
             foreach (var pageInfo in pageInfos)
