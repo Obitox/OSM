@@ -1,0 +1,45 @@
+﻿<Window x:Class="OSMTradeHistory.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        >
+    <Grid>
+        <StackPanel>
+                <!-- Search --> 
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,20">
+                    <Label Target="{Binding ElementName=SymbolTxt}">Price symbol: </Label>
+                    <TextBox x:Name="SymbolTxt" Text="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
+                             Width="300" HorizontalAlignment="Left"/>
+                    <Button Content="Search" Click="BtnSearch_Click"/>
+                    <Button Content="Cancel search" Click="BtnCancelSearch_Click"/>
+                    <Label x:Name="LblStatus" Content=""></Label>
+                </StackPanel>
+                
+                <!-- Table  -->
+                <ListView x:Name="TblHistoryListView" HorizontalAlignment="Center" Height="500" Margin="0,10,0,0" 
+                          VerticalAlignment="Top">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True">
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=TradeDateTimeGmt}" 
+                                            Header="Datetime" Width="150"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=Open}" 
+                                            Header="Opening price" Width="100"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=High}" 
+                                            Header="MAX Price" Width="100"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=Low}" 
+                                            Header="MIN Price" Width="100"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=Close}" 
+                                            Header="Closing price" Width="100"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=Volume}" 
+                                            Header="Share total" Width="100"/>
+                            <GridViewColumn DisplayMemberBinding= "{Binding Path=MovingAverage}" 
+                                            Header="Moving average" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+        </StackPanel>
+    </Grid>
+</Window>

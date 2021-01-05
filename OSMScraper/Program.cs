@@ -9,17 +9,17 @@ namespace OSMScraper
     {
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Scraper start...");
+            Console.WriteLine(@"Scraper start...");
             const string initialScrapeUrl = "https://srh.bankofchina.com/search/whpj/searchen.jsp";
 
-            var scrapeDirectory = "";
+            string scrapeDirectory;
             try
             {
                 scrapeDirectory = ConfigurationManager.AppSettings.Get("ScrapeDirectory");
 
                 if (scrapeDirectory.Length == 0)
                 {
-                    Console.WriteLine($"Directory path not specified in app.config file.");
+                    Console.WriteLine($@"Directory path not specified in app.config file.");
                     return;
                 }
 
@@ -40,14 +40,14 @@ namespace OSMScraper
             var currencies = await scraper.ScrapeAllCurrencies();
             if (currencies == null || currencies.Count == 0)
             {
-                Console.WriteLine("Failed to retrieve any currencies.");
+                Console.WriteLine(@"Failed to retrieve any currencies.");
                 return;
             }
 
             var pageInfos  = await scraper.InitialPagesScrape(currencies);
             if (pageInfos == null || pageInfos.Count == 0)
             {
-                Console.WriteLine("Failed to retrieve any page for any currency.");
+                Console.WriteLine(@"Failed to retrieve any page for any currency.");
                 return;
             } 
             
@@ -57,7 +57,7 @@ namespace OSMScraper
                 scraper.WriteAllPagesForSingleCurrency(pageInfo);
             }
             
-            Console.WriteLine("Scraper finished.");
+            Console.WriteLine(@"Scraper finished.");
         }
     }
 }
